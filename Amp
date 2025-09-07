@@ -54,7 +54,7 @@ RunService.Stepped:Connect(function()
 			local tool = character and character:FindFirstChildOfClass("Tool")
 			local Handle = tool and tool:FindFirstChild("Handle")
 
-			local origin = Handle.CFrame
+			local origin = Handle.Position
 			local direction = Handle.CFrame.ZVector * length
 			local midpoint = origin + direction / 2
 
