@@ -67,7 +67,7 @@ RunService.Stepped:Connect(function()
 			RayVisual.Size = Vector3.new(radius, radius, direction.Magnitude)
 			RayVisual.CFrame = CFrame.new(midpoint, origin)
 
-			local hit, position = workspace:FindPartOnRayWithIgnoreList(ray, params)
+			local hit, position = workspace:FindPartOnRayWithWhitelist(ray, params)
 
 			if hit then
 				print(hit.name.. " was hit")
