@@ -38,42 +38,42 @@ RayVisual.Material = Enum.Material.Neon
 RunService.Stepped:Connect(function()
 	for _, p in ipairs(Players:GetPlayers()) do
 		if p.Name ~= player.Name then 
+			pcall(function()
+				local pchar = p.Character
 
-			local pchar = p.Character
+				local limbs = {
+					RightArm = pchar:FindFirstChild("Right Arm"),
+					LeftArm = pchar:FindFirstChild("Left Arm"),
+					RightLeg = pchar:FindFirstChild("Right Leg"),
+					LeftLeg = pchar:FindFirstChild("Left Leg"),
+					Torso = pchar:FindFirstChild("Torso"),
+					HumanoidRootPart = pchar:FindFirstChild("HumanoidRootPart"),
+					Head = pchar:FindFirstChild("Head")
+				}
 
-			local limbs = {
-				RightArm = pchar:FindFirstChild("Right Arm"),
-				LeftArm = pchar:FindFirstChild("Left Arm"),
-				RightLeg = pchar:FindFirstChild("Right Leg"),
-				LeftLeg = pchar:FindFirstChild("Left Leg"),
-				Torso = pchar:FindFirstChild("Torso"),
-				HumanoidRootPart = pchar:FindFirstChild("HumanoidRootPart"),
-				Head = pchar:FindFirstChild("Head")
-			}
+				local tool = character and character:FindFirstChildOfClass("Tool")
+				local Handle = tool and tool:FindFirstChild("Handle")
 
-			local tool = character and character:FindFirstChildOfClass("Tool")
-			local Handle = tool and tool:FindFirstChild("Handle")
+				local origin = Handle.Position
+				local direction = Handle.CFrame.ZVector * length
+				local midpoint = origin + direction / 2
 
-			local origin = Handle.Position
-			local direction = Handle.CFrame.ZVector * length
-			local midpoint = origin + direction / 2
+				local params = RaycastParams.new()
+				params.FilterType = Enum.RaycastFilterType.Include
+				params.FilterDescendantsInstances = {limbs.RightArm, limbs.LeftArm, limbs.RightLeg, limbs.LeftLeg, limbs.Torso, limbs.HumanoidRootPart, limbs.Head}
 
-			local params = RaycastParams.new()
-			params.FilterType = Enum.RaycastFilterType.Include
-			params.FilterDescendantsInstances = {limbs.RightArm, limbs.LeftArm, limbs.RightLeg, limbs.LeftLeg, limbs.Torso, limbs.HumanoidRootPart, limbs.Head}
-			
-			local ray = Ray.new(origin, direction)
-			
-			RayVisual.Size = Vector3.new(radius, radius, direction.Magnitude)
-			RayVisual.CFrame = CFrame.new(midpoint, origin)
+				local ray = Ray.new(origin, direction)
 
-			local hit, position = workspace:FindPartOnRayWithWhitelist(ray, {limbs.RightArm, limbs.LeftArm, limbs.RightLeg, limbs.LeftLeg, limbs.Torso, limbs.HumanoidRootPart, limbs.Head})
+				RayVisual.Size = Vector3.new(radius, radius, direction.Magnitude)
+				RayVisual.CFrame = CFrame.new(midpoint, origin)
 
-			if hit then
-				print(hit.name.. " was hit")
-				
-			end
+				local hit, position = workspace:FindPartOnRayWithWhitelist(ray, {limbs.RightArm, limbs.LeftArm, limbs.RightLeg, limbs.LeftLeg, limbs.Torso, limbs.HumanoidRootPart, limbs.Head})
 
+				if hit then
+					print(hit.name.. " was hit")
+
+				end
+			end)
 		end
 	end
 end)
