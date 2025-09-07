@@ -52,7 +52,7 @@ RunService.Stepped:Connect(function()
 			}
 
 			local tool = character and character:FindFirstChildOfClass("Tool")
-			local Handle = tool and tool:FindFirstChild("Handle") or tool:FindFirstChildOfClass("Part")
+			local Handle = tool and tool:FindFirstChild("Handle")
 
 			local origin = Handle.CFrame
 			local direction = Handle.CFrame.ZVector * length
