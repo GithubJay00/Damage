@@ -58,7 +58,7 @@ RunService.Stepped:Connect(function()
 			local direction = Handle.CFrame.ZVector * length
 			local midpoint = origin + direction / 2
 
-			--[[local params = RaycastParams.new()
+			local params = RaycastParams.new()
 			params.FilterType = Enum.RaycastFilterType.Include
 			params.FilterDescendantsInstances = {limbs.RightArm, limbs.LeftArm, limbs.RightLeg, limbs.LeftLeg, limbs.Torso, limbs.HumanoidRootPart, limbs.Head}]]
 			
@@ -67,7 +67,7 @@ RunService.Stepped:Connect(function()
 			RayVisual.Size = Vector3.new(radius, radius, direction.Magnitude)
 			RayVisual.CFrame = CFrame.new(midpoint, origin)
 
-			local hit, position = workspace:FindPartOnRay(ray, Handle)
+			local hit, position = workspace:FindPartOnRayWithIgnoreList(ray, params)
 
 			if hit then
 				print(hit.name.. " was hit")
