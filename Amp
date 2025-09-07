@@ -4,7 +4,8 @@ local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local character = player.Character
-
+local tool = character and character:FindFirstChildOfClass("Tool")
+local Handle = tool and tool:FindFirstChild("Handle")
 ------------------------------------------------------------
 
 
@@ -24,7 +25,7 @@ local radius = 0.1
 
 --{{ RayVisualizer }}--
 ------------------------------------------------------------
-local RayVisual = Instance.new("Part", workspace)
+local RayVisual = Instance.new("Part", Handle)
 RayVisual.Anchored = true
 RayVisual.CanCollide = false
 RayVisual.CastShadow = false
@@ -60,8 +61,8 @@ RunService.Stepped:Connect(function()
 
 			local params = RaycastParams.new()
 			params.FilterType = Enum.RaycastFilterType.Include
-			params.FilterDescendantsInstances = {limbs}
-			--params:AddToFilter(limbs)
+			--params.FilterDescendantsInstances = {limbs}
+			params:AddToFilter(limbs)
 			
 			local ray = Ray.new(origin, direction)
 			
