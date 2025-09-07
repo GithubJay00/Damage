@@ -55,14 +55,14 @@ RunService.Stepped:Connect(function()
 			local tool = character and character:FindFirstChildOfClass("Tool")
 			local Handle = tool and tool:FindFirstChild("Handle")
 
-			local origin = Handle.Position
+			local origin = Handle.CFrame.Position
 			local direction = Handle.CFrame.ZVector * length
 			local midpoint = origin + direction / 2
 
 			local params = RaycastParams.new()
 			params.FilterType = Enum.RaycastFilterType.Include
-			--params.FilterDescendantsInstances = {limbs}
-			params:AddToFilter(limbs)
+			params.FilterDescendantsInstances = {limbs}
+			--params:AddToFilter(limbs)
 			
 			local ray = Ray.new(origin, direction)
 			
