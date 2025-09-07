@@ -51,16 +51,16 @@ RunService.Stepped:Connect(function()
 				Head = pchar:FindFirstChild("Head")
 			}
 
-			local tool = player:FindFirstChildOfClass("Tool") or character:FindFirstChildOfClass("Tool")
-			local Handle = tool and tool:FindFirstChild("Handle")
+			local tool = character and character:FindFirstChildOfClass("Tool")
+			local Handle = tool and tool:FindFirstChild("Handle") or tool:FindFirstChildOfClass("Part")
 
-			local origin = Handle.Position
+			local origin = Handle.CFrame
 			local direction = Handle.CFrame.ZVector * length
 			local midpoint = origin + direction / 2
 
 			local params = RaycastParams.new()
 			params.FilterType = Enum.RaycastFilterType.Include
-			params.FilterDescendantsInstances = {limbs.RightArm, limbs.LeftArm, limbs.RightLeg, limbs.LeftLeg, limbs.Torso, limbs.HumanoidRootPart, limbs.Head}]]
+			params.FilterDescendantsInstances = {limbs.RightArm, limbs.LeftArm, limbs.RightLeg, limbs.LeftLeg, limbs.Torso, limbs.HumanoidRootPart, limbs.Head}
 			
 			local ray = Ray.new(origin, direction)
 			
