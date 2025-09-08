@@ -103,7 +103,11 @@ local DeathCheck = RunService.Heartbeat:Connect(function()
 			
 		elseif humanoid.Health > 0 then
 			local Amp = RunService.Heartbeat:Connect(function()
-
+				
+				local Players = game:GetService("Players")
+				local player = Players.LocalPlayer
+				local character = player.Character
+				
 				local tool = player:FindFirstChildOfClass("Tool") or character:FindFirstChildOfClass("Tool")
 				local Handle = tool and tool:FindFirstChild("Handle")
 
