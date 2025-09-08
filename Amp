@@ -1,24 +1,29 @@
 --{{ Variables }}--
 ------------------------------------------------------------
+
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
+
 local player = Players.LocalPlayer
 local character = player.Character
-local tool = character and character:FindFirstChildOfClass("Tool")
+local humanoid = character:FindFirstChild("Humanoid")
+
+local tool = player:FindFirstChildOfClass("Tool") or character:FindFirstChildOfClass("Tool")
 local Handle = tool and tool:FindFirstChild("Handle")
+
 ------------------------------------------------------------
 
 
 
 --{{ Misc }}--
 ------------------------------------------------------------
-local Touched = {}
 
-local DamageX = 2
+local DamageX = 2 -- amount of damage being dealt
 
-local length = 2
+local length = 2 -- line reach
 
-local radius = 0.1
+local size = 0.1 -- Visualizer Thickness
+
 ------------------------------------------------------------
 
 
@@ -36,46 +41,106 @@ RayVisual.Material = Enum.Material.Neon
 
 
 
-RunService.Stepped:Connect(function()
-	for _, p in ipairs(Players:GetPlayers()) do
-		if p.Name ~= player.Name then 
+--{{ Script }}--
+------------------------------------------------------------
 
+local function Whitelist()
+	
+	local Touched = {} -- list of parts touching your hitbox
+	
+	for _, p in pairs(Players:GetPlayers()) do
+		if p.Name ~= player.Name then
+			
 			local pchar = p.Character
-
-			local limbs = {
-				RightArm = pchar:FindFirstChild("Right Arm"),
-				LeftArm = pchar:FindFirstChild("Left Arm"),
-				RightLeg = pchar:FindFirstChild("Right Leg"),
-				LeftLeg = pchar:FindFirstChild("Left Leg"),
-				Torso = pchar:FindFirstChild("Torso"),
-				HumanoidRootPart = pchar:FindFirstChild("HumanoidRootPart"),
-				Head = pchar:FindFirstChild("Head")
-			}
-
-			local tool = character and character:FindFirstChildOfClass("Tool")
-			local Handle = tool and tool:FindFirstChild("Handle")
-
-			local origin = Handle.CFrame.Position
-			local direction = Handle.CFrame.ZVector * length
-			local midpoint = origin + direction / 2
-
-			local params = RaycastParams.new()
-			params.FilterType = Enum.RaycastFilterType.Include
-			params.FilterDescendantsInstances = {limbs}
-			--params:AddToFilter(limbs)
 			
-			local ray = Ray.new(origin, direction)
-			
-			RayVisual.Size = Vector3.new(radius, radius, direction.Magnitude)
-			RayVisual.CFrame = CFrame.new(midpoint, origin)
-
-			local hit, position = workspace:FindPartOnRayWithWhitelist(ray, {params})
-
-			if hit then
-				print(hit.name.. " was hit")
-				
+			if pchar then
+				for _, child in pairs(pchar:GetChildren()) do
+					if child:IsA("BasePart") then
+						table.insert(Touched, child)
+					end
+				end
 			end
+		end
+	end
+	return Touched
+end
 
+
+
+local Amp = RunService.Heartbeat:Connect(function()
+	
+	local tool = player:FindFirstChildOfClass("Tool") or character:FindFirstChildOfClass("Tool")
+	local Handle = tool and tool:FindFirstChild("Handle")
+
+
+	local origin = Handle.CFrame.Position
+	local direction = Handle.CFrame.ZVector * length
+	local midpoint = origin + direction / 2
+
+
+
+	local ray = Ray.new(origin, direction)
+
+
+	RayVisual.Size = Vector3.new(size, size, direction.Magnitude)
+	RayVisual.CFrame = CFrame.new(midpoint, origin)
+
+	local hit, position = workspace:FindPartOnRayWithWhitelist(ray, Whitelist())
+
+	if hit then
+		print(hit.name.. " was hit")
+
+	end
+	
+end)
+
+
+
+local DeathCheck = RunService.Heartbeat:Connect(function()
+	if humanoid then
+		if humanoid.Health <= 0 then
+			Amp:Disconnect()
+			
+		elseif humanoid.Health > 0 then
+			local Amp = RunService.Heartbeat:Connect(function()
+
+				local tool = player:FindFirstChildOfClass("Tool") or character:FindFirstChildOfClass("Tool")
+				local Handle = tool and tool:FindFirstChild("Handle")
+
+
+				local origin = Handle.CFrame.Position
+				local direction = Handle.CFrame.ZVector * length
+				local midpoint = origin + direction / 2
+
+
+
+				local ray = Ray.new(origin, direction)
+
+
+				RayVisual.Size = Vector3.new(size, size, direction.Magnitude)
+				RayVisual.CFrame = CFrame.new(midpoint, origin)
+
+				local hit, position = workspace:FindPartOnRayWithWhitelist(ray, Whitelist())
+
+				if hit then
+					print(hit.name.. " was hit")
+
+				end
+
+			end)
 		end
 	end
 end)
+
+------------------------------------------------------------
+
+
+--[[
+
+main issue: raycast filtering, error: expected table argument on line 72 --
+
+2nd issue: stops working on character reset, error: attempt to index nil with CFrame on line 59
+
+3rd issue: only works when sword is held out, error: attempt to index nil with CFrame on line 59 --
+
+]]
