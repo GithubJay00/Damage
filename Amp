@@ -96,7 +96,7 @@ end)
 
 
 
-local DeathCheck = RunService.Heartbeat:Connect(function()
+--[[local DeathCheck = RunService.Heartbeat:Connect(function()
 	if humanoid then
 		if humanoid.Health <= 0 then
 			Amp:Disconnect()
@@ -134,7 +134,7 @@ local DeathCheck = RunService.Heartbeat:Connect(function()
 			end)
 		end
 	end
-end)
+end)]]
 
 ------------------------------------------------------------
 
