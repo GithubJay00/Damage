@@ -141,7 +141,7 @@ end)]]
 
 --[[
 
-main issue: raycast filtering, error: expected table argument on line 72 --
+main issue: raycast filtering, error: expected table argument on line 72 -- fixed
 
 2nd issue: stops working on character reset, error: attempt to index nil with CFrame on line 59
 
