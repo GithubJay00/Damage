@@ -82,31 +82,31 @@ local function Whitelist()
 end
 
 
-local Amp = RunService.Heartbeat:Connect(function()
+local Amp = RunService.Stepped:Connect(function()
 	
-	local tool = player:FindFirstChildOfClass("Tool") or character:FindFirstChildOfClass("Tool")
-	local Handle = tool and tool:FindFirstChild("Handle")
+	local tool = character and character:FindFirstChildOfClass("Tool")
+	if not tool then return end
+	
+	if tool then
+		local handle = tool:FindFirstChild("Handle") or tool:FindFirstChildOfClass("Part")
+		if handle then
+			
+			local origin = Handle.CFrame.Position
+			local direction = Handle.CFrame.ZVector * length
+			local midpoint = origin + direction / 2
 
+			local ray = Ray.new(origin, direction)
 
-	local origin = Handle.CFrame.Position
-	local direction = Handle.CFrame.ZVector * length
-	local midpoint = origin + direction / 2
+			RayVisual.Size = Vector3.new(RaySize, RaySize, direction.Magnitude)
+			RayVisual.CFrame = CFrame.new(midpoint, origin)
 
+			local hit, position = workspace:FindPartOnRayWithWhitelist(ray, Whitelist())
 
-
-	local ray = Ray.new(origin, direction)
-
-
-	RayVisual.Size = Vector3.new(RaySize, RaySize, direction.Magnitude)
-	RayVisual.CFrame = CFrame.new(midpoint, origin)
-
-	local hit, position = workspace:FindPartOnRayWithWhitelist(ray, Whitelist())
-
-	if hit then
-		print(hit.name.. " was hit")
-
+			if hit then
+				print(hit.name.. " was hit")
+			end
+		end
 	end
-	
 end)
 
 ------------------------------------------------------------
