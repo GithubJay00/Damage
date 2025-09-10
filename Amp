@@ -11,8 +11,7 @@ local player = Players.LocalPlayer
 local character = player.Character
 local humanoid = character:FindFirstChild("Humanoid")
 
-local tool = character and character:FindFirstChildOfClass("Tool")
-local handle = tool:FindFirstChild("Handle") or tool:FindFirstChildOfClass("Part")
+
 
 ------------------------------------------------------------
 
@@ -46,7 +45,7 @@ local RaySize = 0.1 -- Visualizer Thickness
 
 --{{ RayVisualizer }}--
 ------------------------------------------------------------
-local RayVisual = Instance.new("Part", handle)
+local RayVisual = Instance.new("Part", Workspace)
 RayVisual.Anchored = true
 RayVisual.CanCollide = false
 RayVisual.CastShadow = false
