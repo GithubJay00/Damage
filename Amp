@@ -11,8 +11,6 @@ local player = Players.LocalPlayer
 local character = player.Character
 local humanoid = character:FindFirstChild("Humanoid")
 
-
-
 ------------------------------------------------------------
 
 
