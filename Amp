@@ -10,7 +10,8 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local character = player.Character
 local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-
+print(humanoid)
+print("test")
 local t = character and character:FindFirstChildOfClass("Tool")
 local h = t and t:FindFirstChild("Handle")
 
@@ -85,6 +86,9 @@ end
 local Amp = RunService.Stepped:Connect(function()
 	
 	if humanoid and humanoid.Health <= 0 then
+		
+		print(humanoid)
+		print("test")
 		local tool = character and character:FindFirstChildOfClass("Tool")
 		if not tool then return end
 
