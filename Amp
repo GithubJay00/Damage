@@ -27,7 +27,6 @@ local length = 2 -- line reach
 
 ------------------------------------------------------------
 
-
 --{{ Visualizer Settings}}
 
 local RayVisualizer = 0 -- 0 = on, 1 = off
