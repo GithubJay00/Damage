@@ -1,6 +1,5 @@
 
---4
- -- Scripted by aaa000798 DC
+-- Scripted by aaa000798 DC
 
 --{{ Variables }}--
 ------------------------------------------------------------
@@ -10,7 +9,10 @@ local Players = game:GetService("Players")
 
 local player = Players.LocalPlayer
 local character = player.Character
-local humanoid = character:FindFirstChild("Humanoid")
+local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+
+local t = character and character:FindFirstChildOfClass("Tool")
+local h = t and t:FindFirstChild("Handle")
 
 ------------------------------------------------------------
 
@@ -28,6 +30,7 @@ local length = 2 -- line reach
 
 ------------------------------------------------------------
 
+
 --{{ Visualizer Settings}}
 
 local RayVisualizer = 0 -- 0 = on, 1 = off
@@ -43,7 +46,7 @@ local RaySize = 0.1 -- Visualizer Thickness
 
 --{{ RayVisualizer }}--
 ------------------------------------------------------------
-local RayVisual = Instance.new("Part", Workspace)
+local RayVisual = Instance.new("Part", h)
 RayVisual.Anchored = true
 RayVisual.CanCollide = false
 RayVisual.CastShadow = false
