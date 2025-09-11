@@ -83,9 +83,9 @@ end
 local Amp = RunService.Stepped:Connect(function()
 	
 	local Character = player.Character
-	local humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
+	--local humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
 	
-	if humanoid and humanoid.Health <= 0 then
+	--if humanoid and humanoid.Health <= 0 then
 	
 		--local tool = character and character:FindFirstChildOfClass("Tool")
 		--local handle = tool:FindFirstChild("Handle") or tool:FindFirstChildOfClass("Part")
@@ -111,7 +111,7 @@ local Amp = RunService.Stepped:Connect(function()
 				print(hit.name.. " was hit")
 			end
 		end
-	end
+	--end
 end)
 
 ------------------------------------------------------------
