@@ -83,9 +83,9 @@ local Player = Players.LocalPlayer
 local Amp = RunService.Stepped:Connect(function()
 	
 	local character = Player.Character
-	--local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 	
-	--if humanoid and humanoid.Health > 0 then
+	if humanoid and humanoid.Health > 0 then
 		local tool = character and character:FindFirstChildOfClass("Tool")
 		if not tool then RayVisual.Parent = nil end
 
@@ -114,20 +114,7 @@ local Amp = RunService.Stepped:Connect(function()
 				end
 			end
 		end
-	--end
+	end
 end)
 
 ------------------------------------------------------------
-
-
---[[
-
-main issue: raycast filtering, error: expected table argument on line 72 -- status: fixed
-
-2nd issue: stops working on character reset, error: attempt to index nil with CFrame on line 59 -- status: not fixed
-
-3rd issue: only works when sword is held out, error: attempt to index nil with CFrame on line 59 -- status: fixed
-
-visualizer doesnt work when sword is not held out while executed
-
-]]
