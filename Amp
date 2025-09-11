@@ -24,7 +24,7 @@ local h = t and t:FindFirstChild("Handle")
 
 local DamageX = 2 -- amount of damage being dealt
 
-local length = 2 -- line reach
+local length = 4 -- line reach
 
 ------------------------------------------------------------
 
@@ -96,8 +96,8 @@ local Amp = RunService.Stepped:Connect(function()
 		if not tool and handle then return end
 		if tool and handle then
 			
-			local origin = handle.CFrame.Position
-			local direction = handle.CFrame.ZVector * length
+			local origin = handle.CFrame.Z
+			local direction = handle.CFrame.Z * length
 			local midpoint = origin + direction / 2
 	
 			local ray = Ray.new(origin, direction)
