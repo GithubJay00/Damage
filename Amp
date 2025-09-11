@@ -22,7 +22,7 @@ local DamageAmp = true
 
 local DamageX = 20 -- amount of damage being dealt
 
-local length = 2 -- line reach
+local length = 3 -- line reach
 
 ------------------------------------------------------------
 
@@ -114,9 +114,13 @@ local Amp = RunService.Stepped:Connect(function()
 				if hit then
 					if DamageAmp then
 						for i = 1, DamageX do
-							firetouchinterest(hit,handle,0)
-							firetouchinterest(hit,handle,1)
-							firetouchinterest(hit,handle,0)
+							for _, vhit in pairs(hit.Parent:GetChildren()) do
+								if vhit:IsA("BasePart") then
+									firetouchinterest(vhit,handle,0)
+									firetouchinterest(vhit,handle,1)
+									firetouchinterest(vhit,handle,0)
+								end
+							end
 						end
 					end
 				end
