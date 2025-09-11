@@ -85,7 +85,7 @@ local Amp = RunService.Stepped:Connect(function()
 	local character = Player.Character
 	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 	
-	if humanoid and humanoid.Health > 0 then
+	if humanoid and humanoid.Health <= 0 then
 		local tool = character and character:FindFirstChildOfClass("Tool")
 		if not tool then RayVisual.Parent = nil end
 
