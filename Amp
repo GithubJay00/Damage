@@ -20,15 +20,15 @@ local player = Players.LocalPlayer
 
 local DamageAmp = true
 
-local DamageX = 20 -- amount of damage being dealt
+local DamageX = 4 -- amount of damage being dealt
 
-local length = 3 -- line reach
+local length = 4 -- line reach
 
 ------------------------------------------------------------
 
 --{{ Visualizer Settings}}
 
-local RayVisualizer = true
+local RayVisualizer = false
 
 local RayTransparency = 0 -- Visualizer Transparency
 
