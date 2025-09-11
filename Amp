@@ -6,13 +6,7 @@
 
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
-
 local player = Players.LocalPlayer
-local character = player.Character
---local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-
-local t = character and character:FindFirstChildOfClass("Tool")
-local h = t and t:FindFirstChild("Handle")
 
 ------------------------------------------------------------
 
@@ -26,14 +20,15 @@ local h = t and t:FindFirstChild("Handle")
 
 local DamageX = 2 -- amount of damage being dealt
 
-local length = 4 -- line reach
+local length = 2 -- line reach
 
 ------------------------------------------------------------
 
-
 --{{ Visualizer Settings}}
 
-local RayVisualizer = 0 -- 0 = on, 1 = off
+local RayVisualizer = true
+
+local RayTransparency = 0 -- Visualizer Transparency
 
 local RayColor = Color3.fromRGB(255, 0, 0) -- Visualizer Color
 
@@ -46,13 +41,15 @@ local RaySize = 0.1 -- Visualizer Thickness
 
 --{{ RayVisualizer }}--
 ------------------------------------------------------------
-local RayVisual = Instance.new("Part", h)
+
+local RayVisual = Instance.new("Part")
 RayVisual.Anchored = true
 RayVisual.CanCollide = false
 RayVisual.CastShadow = false
 RayVisual.Color = RayColor
-RayVisual.Transparency = RayVisualizer
+RayVisual.Transparency = RayTransparency
 RayVisual.Material = Enum.Material.Neon
+
 ------------------------------------------------------------
 
 
@@ -81,19 +78,28 @@ local function Whitelist()
 	return Touched
 end
 
+local Player = Players.LocalPlayer
 
 local Amp = RunService.Stepped:Connect(function()
 	
+	local character = Player.Character
+	--local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	
 	--if humanoid and humanoid.Health > 0 then
 		local tool = character and character:FindFirstChildOfClass("Tool")
-		if not tool then return end
+		if not tool then RayVisual.Parent = nil end
 
 		if tool then
 			local handle = tool:FindFirstChild("Handle") or tool:FindFirstChildOfClass("Part")
 			if handle then
+				if RayVisualizer then
+					RayVisual.Parent = workspace
+				else
+					RayVisual.Parent = nil
+				end
 
-				local origin = handle.CFrame.Z
-				local direction = handle.CFrame.Z * length
+				local origin = handle.CFrame.Position
+				local direction = handle.CFrame.ZVector * length
 				local midpoint = origin + direction / 2
 
 				local ray = Ray.new(origin, direction)
