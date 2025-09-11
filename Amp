@@ -6,8 +6,10 @@
 
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
+
 local player = Players.LocalPlayer
 local character = player.Character
+--local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 
 local t = character and character:FindFirstChildOfClass("Tool")
 local h = t and t:FindFirstChild("Handle")
@@ -28,6 +30,7 @@ local length = 4 -- line reach
 
 ------------------------------------------------------------
 
+
 --{{ Visualizer Settings}}
 
 local RayVisualizer = 0 -- 0 = on, 1 = off
@@ -43,8 +46,7 @@ local RaySize = 0.1 -- Visualizer Thickness
 
 --{{ RayVisualizer }}--
 ------------------------------------------------------------
-local RayVisual = Instance.new("Part")
-RayVisual.Parent = h
+local RayVisual = Instance.new("Part", h)
 RayVisual.Anchored = true
 RayVisual.CanCollide = false
 RayVisual.CastShadow = false
@@ -82,33 +84,28 @@ end
 
 local Amp = RunService.Stepped:Connect(function()
 	
-	local Character = player.Character
-	--local humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
-	
-	--if humanoid and humanoid.Health <= 0 then
-	
-		--local tool = character and character:FindFirstChildOfClass("Tool")
-		--local handle = tool:FindFirstChild("Handle") or tool:FindFirstChildOfClass("Part")
-		
-		local tool = Character and Character:FindFirstChildOfClass("Tool")
-		local handle = tool and tool:FindFirstChild("Handle")
-		
-		if not tool and handle then return end
-		if tool and handle then
-			
-			local origin = handle.CFrame.Z
-			local direction = handle.CFrame.Z * length
-			local midpoint = origin + direction / 2
-	
-			local ray = Ray.new(origin, direction)
+	--if humanoid and humanoid.Health > 0 then
+		local tool = character and character:FindFirstChildOfClass("Tool")
+		if not tool then return end
 
-			RayVisual.Size = Vector3.new(RaySize, RaySize, direction.Magnitude)
-			RayVisual.CFrame = CFrame.new(midpoint, origin)
-	
-			local hit, position = workspace:FindPartOnRayWithWhitelist(ray, Whitelist())
+		if tool then
+			local handle = tool:FindFirstChild("Handle") or tool:FindFirstChildOfClass("Part")
+			if handle then
 
-			if hit then
-				print(hit.name.. " was hit")
+				local origin = handle.CFrame.Z
+				local direction = handle.CFrame.Z * length
+				local midpoint = origin + direction / 2
+
+				local ray = Ray.new(origin, direction)
+
+				RayVisual.Size = Vector3.new(RaySize, RaySize, direction.Magnitude)
+				RayVisual.CFrame = CFrame.new(midpoint, origin)
+
+				local hit, position = workspace:FindPartOnRayWithWhitelist(ray, Whitelist())
+
+				if hit then
+					print(hit.name.. " was hit")
+				end
 			end
 		end
 	--end
