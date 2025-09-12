@@ -22,13 +22,13 @@ local DamageAmp = true
 
 local Value1, Value2 = 0, 5 -- amount of damage being dealt
 
-local length = 3 -- line reach
+local length = 20 -- line reach
 
 ------------------------------------------------------------
 
 --{{ Visualizer Settings}}
 
-local RayVisualizer = false
+local RayVisualizer = true
 
 local RayTransparency = 0 -- Visualizer Transparency
 
