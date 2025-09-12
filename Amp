@@ -20,7 +20,7 @@ local player = Players.LocalPlayer
 
 local DamageAmp = true
 
-local Value1, Value2 = 2, 0 -- amount of damage being dealt
+local Value1, Value2 = 0, 5 -- amount of damage being dealt
 
 local length = 3 -- line reach
 
