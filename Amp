@@ -20,9 +20,9 @@ local player = Players.LocalPlayer
 
 local DamageAmp = true
 
-local DamageX = 4 -- amount of damage being dealt
+local Value1, Value2 = 2, 0 -- amount of damage being dealt
 
-local length = 4 -- line reach
+local length = 3 -- line reach
 
 ------------------------------------------------------------
 
@@ -113,7 +113,7 @@ local Amp = RunService.Stepped:Connect(function()
 
 				if hit then
 					if DamageAmp then
-						for i = 1, DamageX do
+						for i = 1, Value1, Value2 do
 							for _, vhit in pairs(hit.Parent:GetChildren()) do
 								if vhit:IsA("BasePart") then
 									firetouchinterest(vhit,handle,0)
