@@ -20,15 +20,15 @@ local player = Players.LocalPlayer
 
 local DamageAmp = true
 
--- local DamageX = 2 -- amount of damage being dealt
+local DamageX = 0.7 -- amount of damage being dealt
 
-local length = 4 -- line reach
+local length = 3 -- line reach
 
 ------------------------------------------------------------
 
 --{{ Visualizer Settings}}
 
-local RayVisualizer = true
+local RayVisualizer = false
 
 local RayTransparency = 0 -- Visualizer Transparency
 
@@ -126,7 +126,7 @@ local Amp = RunService.Stepped:Connect(function()
 
 					if hit then
 						if DamageAmp then
-							while wait() do
+							while wait(DamageX) do
 								firetouchinterest(hit,handle,0)
 								firetouchinterest(hit,handle,1)
 								firetouchinterest(hit,handle,0)
@@ -147,7 +147,7 @@ local Amp = RunService.Stepped:Connect(function()
 
 					if hit2 then
 						if DamageAmp then
-							while wait() do
+							while wait(DamageX) do
 								firetouchinterest(hit2,handle,0)
 								firetouchinterest(hit2,handle,1)
 								firetouchinterest(hit2,handle,0)
