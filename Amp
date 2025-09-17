@@ -20,7 +20,7 @@ local player = Players.LocalPlayer
 
 local DamageAmp = true
 
-local Value1, Value2 = 2, 0 -- amount of damage being dealt
+-- local DamageX = 2 -- amount of damage being dealt
 
 local length = 4 -- line reach
 
@@ -28,7 +28,7 @@ local length = 4 -- line reach
 
 --{{ Visualizer Settings}}
 
-local RayVisualizer = false
+local RayVisualizer = true
 
 local RayTransparency = 0 -- Visualizer Transparency
 
@@ -52,6 +52,15 @@ RayVisual.Color = RayColor
 RayVisual.Transparency = RayTransparency
 RayVisual.Material = Enum.Material.Neon
 
+
+local RayVisual2 = Instance.new("Part")
+RayVisual2.Anchored = true
+RayVisual2.CanCollide = false
+RayVisual2.CastShadow = false
+RayVisual2.Color = RayColor
+RayVisual2.Transparency = RayTransparency
+RayVisual2.Material = Enum.Material.Neon
+
 ------------------------------------------------------------
 
 
@@ -60,14 +69,14 @@ RayVisual.Material = Enum.Material.Neon
 ------------------------------------------------------------
 
 local function Whitelist()
-	
+
 	local Touched = {} -- list of parts touching your hitbox
-	
+
 	for _, p in pairs(Players:GetPlayers()) do
 		if p.Name ~= player.Name then
-			
+
 			local pchar = p.Character
-			
+
 			if pchar then
 				for _, child in pairs(pchar:GetChildren()) do
 					if child:IsA("BasePart") then
@@ -83,46 +92,72 @@ end
 local Player = Players.LocalPlayer
 
 local Amp = RunService.Stepped:Connect(function()
-	
+
 	local character = Player.Character
-	--local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-	
-	--if humanoid and humanoid.Health > 0 then
-		local tool = character and character:FindFirstChildOfClass("Tool")
-		if not tool then RayVisual.Parent = nil end
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 
-		if tool then
-			local handle = tool:FindFirstChild("Handle") or tool:FindFirstChildOfClass("Part")
-			if handle then
-				if RayVisualizer then
-					RayVisual.Parent = workspace
-				else
-					RayVisual.Parent = nil
-				end
+	if humanoid then
+		if humanoid.Health > 0 then
+			
+			local tool = character and character:FindFirstChildOfClass("Tool")
+			if not tool then RayVisual.Parent = nil end
 
-				local origin = handle.CFrame.Position
-				local direction = handle.CFrame.ZVector * length
-				local midpoint = origin + direction / 2
+			if tool then
+				local handle = tool:FindFirstChild("Handle") or tool:FindFirstChildOfClass("Part")
+				if handle then
+					if RayVisualizer then
+						RayVisual.Parent = workspace
+						RayVisual2.Parent = workspace
+					else
+						RayVisual.Parent = nil
+						RayVisual2.Parent = nil
+					end
 
-				local ray = Ray.new(origin, direction)
+					local origin = handle.CFrame.Position
+					local direction = handle.CFrame.ZVector * length
+					local midpoint = origin + direction / 2
 
-				RayVisual.Size = Vector3.new(RaySize, RaySize, direction.Magnitude)
-				RayVisual.CFrame = CFrame.new(midpoint, origin)
+					local ray = Ray.new(origin, direction)
 
-				local hit, position = workspace:FindPartOnRayWithWhitelist(ray, Whitelist())
+					RayVisual.Size = Vector3.new(RaySize, RaySize, direction.Magnitude)
+					RayVisual.CFrame = CFrame.new(midpoint, origin)
 
-				if hit then
-					if DamageAmp then
-						for i = 1, Value1, Value2 do
-							firetouchinterest(hit,handle,0)
-							firetouchinterest(hit,handle,1)
-							firetouchinterest(hit,handle,0)
+					local hit, position = workspace:FindPartOnRayWithWhitelist(ray, Whitelist())
+
+					if hit then
+						if DamageAmp then
+							while wait() do
+								firetouchinterest(hit,handle,0)
+								firetouchinterest(hit,handle,1)
+								firetouchinterest(hit,handle,0)
+							end
+						end
+					end
+					
+					local origin2 = handle.CFrame.Position
+					local direction2 = handle.CFrame.ZVector * -length
+					local midpoint2 = origin2 + direction2 / 2
+
+					local ray2 = Ray.new(origin2, direction2)
+
+					RayVisual.Size = Vector3.new(RaySize, RaySize, direction2.Magnitude)
+					RayVisual.CFrame = CFrame.new(midpoint2, origin2)
+
+					local hit2, position2 = workspace:FindPartOnRayWithWhitelist(ray2, Whitelist())
+
+					if hit2 then
+						if DamageAmp then
+							while wait() do
+								firetouchinterest(hit2,handle,0)
+								firetouchinterest(hit2,handle,1)
+								firetouchinterest(hit2,handle,0)
+							end
 						end
 					end
 				end
 			end
 		end
-	--end
+	end
 end)
 
 ------------------------------------------------------------
