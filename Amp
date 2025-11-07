@@ -1,8 +1,10 @@
 getgenv().Settings = {
 
 	AmpToggle = true , 
-
-	Damage = 2 
+	Damage = 2 ,
+	
+	LungeBotToggled = true ,
+	LungeBotRange = 9  
 }
 
 local Players = game:GetService("Players")
@@ -63,6 +65,40 @@ RunService.Stepped:Connect(function()
 								end
 							end
 						end
+					end
+				end
+			end
+		end
+	end
+end)
+
+RunService.Stepped:Connect(function()
+	if Settings.LungeBotToggled then
+		for _, p in pairs(Players:GetPlayers()) do
+			if p.Name ~= player.Name then
+
+				local pChar = p.Character
+				local pHRP = pChar and pChar:FindFirstChild("HumanoidRootPart")
+				local pHM = pChar and pChar:FindFirstChildOfClass("Humanoid")
+
+				local Char = player.Character
+				local HRP = Char and Char:FindFirstChild("HumanoidRootPart")
+				local HM = Char and Char:FindFirstChildOfClass("Humanoid")
+
+				if HM and pHM then
+					if HM.Health > 0 and pHM.Health > 0 then
+
+						local tool = Char and Char:FindFirstChildOfClass("Tool")
+						local Handle = tool and tool:FindFirstChild("Handle")
+
+						pcall(function()
+							if tool and Handle then
+								local Distance = (Handle.Position - pHRP.Position).Magnitude
+								if Distance <= Settings.LungeBotRange then
+									tool:Activate()
+								end
+							end
+						end)
 					end
 				end
 			end
