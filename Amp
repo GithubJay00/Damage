@@ -1,16 +1,13 @@
-
 getgenv().Settings = {
-	AmpToggle = true,
-	ReachToggle = false,
-	Damage = 1,
-	AmpMode = "Legit"
+
+	AmpToggle = true , 
+
+	Damage = 2 
 }
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local StarterGui = game:GetService("StarterGui")
 local player = Players.LocalPlayer
-
 
 local function Whitelist()
 
@@ -35,59 +32,40 @@ local function Whitelist()
 end
 
 RunService.Stepped:Connect(function()
-
 	if Settings.AmpToggle then
-		if not Settings.ReachToggle then
+		for _, p in pairs(Players:GetPlayers()) do
+			if p.Name ~= player.Name then
 
-			for _, p in pairs(Players:GetPlayers()) do
-				if p.Name ~= player.Name then
+				local qChar = p.Character
+				local qHM = qChar and qChar:FindFirstChildOfClass("Humanoid")
 
-					local qChar = p.Character
-					local qHM = qChar and qChar:FindFirstChildOfClass("Humanoid")
+				local Char = player.Character
+				local HM = Char and Char:FindFirstChildOfClass("Humanoid")
 
-					local Char = player.Character
-					local HM = Char and Char:FindFirstChildOfClass("Humanoid")
+				if HM and qHM then
+					if HM.Health > 0 and qHM.Health > 0 then
 
-					if HM and qHM then
-						if HM.Health > 0 and qHM.Health > 0 then
+						local tool = Char and Char:FindFirstChildOfClass("Tool")
+						local Handle = tool and tool:FindFirstChild("Handle")
 
-							local tool = Char and Char:FindFirstChildOfClass("Tool")
-							local Handle = tool and tool:FindFirstChild("Handle")
-
-							if tool and Handle then
-
-
-								if Settings.AmpMode == "Legit" then
-									
-									print("AMP")
-									
-									for _, hit in pairs(Handle:GetTouchingParts()) do
-										
-										if hit == Whitelist() then
-											
-											for _, Child in pairs(qChar:GetChildren()) do
-												
-												for _ = 1, Settings.Damage do
-													
-													if Child:IsA("BasePart") then
-														
-														firetouchinterest(Child, Handle, 0)
-														firetouchinterest(Child, Handle, 1)
-														firetouchinterest(Child, Handle, 0)
-													end
-												end
+						if tool and Handle then
+							for _, hit in pairs(Handle:GetTouchingParts()) do
+								if hit == Whitelist() then
+									for _, Child in pairs(qChar:GetChildren()) do
+										for _ = 1, Settings.Damage do
+											if Child:IsA("BasePart") then
+												firetouchinterest(Child, Handle, 0)
+												firetouchinterest(Child, Handle, 1)
+												firetouchinterest(Child, Handle, 0)
 											end
 										end
 									end
 								end
-								
-								
 							end
 						end
 					end
 				end
 			end
-
 		end
 	end
 end)
