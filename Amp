@@ -1,10 +1,30 @@
+if not game:IsLoaded() then
+	game.Loaded:Wait()
+end
+
+if game.PlaceId == 6361937392 or game.PlaceId == 6356763358 or game.PlaceId == 11515893037 or game.PlaceId == 13594360346 then
+
+	local ReplicatedFirst = game:GetService("ReplicatedFirst")
+	local sm = ReplicatedFirst:FindFirstChild("Static"):FindFirstChild("Superman")
+	local Stats1 = ReplicatedFirst:FindFirstChild("Prod"):FindFirstChild("Stats")
+	local SH = ReplicatedFirst:FindFirstChild("Static"):FindFirstChild("UIScaleHandler")
+
+	if sm and Stats1 and SH then
+		sm.Parent = nil
+		Stats1.Parent = nil
+		SH.Parent = nil
+	end
+end
+
 getgenv().Settings = {
 
 	AmpToggle = true , 
 	Damage = 2 ,
 	
 	LungeBotToggled = true ,
-	LungeBotRange = 9  
+	LungeBotRange = 9  ,
+	
+	guiToggle = true , 
 }
 
 local Players = game:GetService("Players")
@@ -103,5 +123,97 @@ RunService.Stepped:Connect(function()
 				end
 			end
 		end
+	end
+end)
+
+RunService.RenderStepped:Connect(function()
+	if game.PlaceId == 6361937392 or game.PlaceId == 6356763358 or game.PlaceId == 11515893037 or game.PlaceId == 13594360346 then
+		_G.playerGui = player:FindFirstChild("PlayerGui")
+		_G.UIF = _G.playerGui:FindFirstChild("UserInterface")
+		_G.Menus = _G.UIF:FindFirstChild("Menus")
+
+		if Settings3.guiToggle then
+
+			if _G.Menus:FindFirstChild("Store") then
+				if _G.Menus:FindFirstChild("Store").Position == UDim2.new(0.5, 0, 1.5, 0) then
+					_G.Menus:FindFirstChild("Store").Visible = false
+				else
+					_G.Menus:FindFirstChild("Store").Visible = true
+				end
+			end
+
+
+			if _G.Menus:FindFirstChild("Quests") then
+				if _G.Menus:FindFirstChild("Quests").Position == UDim2.new(0.5, 0, 1.5, 0) then
+					_G.Menus:FindFirstChild("Quests").Visible = false
+				else
+					_G.Menus:FindFirstChild("Quests").Visible = true
+				end
+			end
+
+
+			if _G.Menus:FindFirstChild("Inventory") then
+				if _G.Menus:FindFirstChild("Inventory").Position == UDim2.new(0.5, 0, 1.5, 0) then
+					_G.Menus:FindFirstChild("Inventory").Visible = false
+				else
+					_G.Menus:FindFirstChild("Inventory").Visible = true
+				end
+			end
+
+
+			if _G.Menus:FindFirstChild("Index") then
+				if _G.Menus:FindFirstChild("Index").Position == UDim2.new(0.5, 0, 1.5, 0) then
+					_G.Menus:FindFirstChild("Index").Visible = false
+				else
+					_G.Menus:FindFirstChild("Index").Visible = true
+				end
+			end
+
+
+			if _G.Menus:FindFirstChild("BulkRewards") then
+				if _G.Menus:FindFirstChild("BulkRewards").Position == UDim2.new(0.5, 0, 1.5, 0) then
+					_G.Menus:FindFirstChild("BulkRewards").Visible = false
+				else
+					_G.Menus:FindFirstChild("BulkRewards").Visible = true
+				end
+			end
+
+
+			if _G.Menus:FindFirstChild("Marketplace") then
+				if _G.Menus:FindFirstChild("Marketplace").Position == UDim2.new(0.5, 0, 1.5, 0) then
+					_G.Menus:FindFirstChild("Marketplace").Visible = false
+				else
+					_G.Menus:FindFirstChild("Marketplace").Visible = true
+				end
+			end
+
+
+			if _G.Menus:FindFirstChild("Arcade") then
+				if _G.Menus:FindFirstChild("Arcade").Position == UDim2.new(0.5, 0, 1.5, 0) then
+					_G.Menus:FindFirstChild("Arcade").Visible = false
+				else
+					_G.Menus:FindFirstChild("Arcade").Visible = true
+				end
+			end
+
+
+			if _G.Menus:FindFirstChild("Clans") then
+				if _G.Menus:FindFirstChild("Clans").Position == UDim2.new(0.5, 0, 1.5, 0) then
+					_G.Menus:FindFirstChild("Clans").Visible = false
+				else
+					_G.Menus:FindFirstChild("Clans").Visible = true
+				end
+			end
+
+
+			if _G.Menus:FindFirstChild("UpdateLog") then
+				if _G.Menus:FindFirstChild("UpdateLog").Position == UDim2.new(0.5, 0, 1.5, 0) then
+					_G.Menus:FindFirstChild("UpdateLog").Visible = false
+				else
+					_G.Menus:FindFirstChild("UpdateLog").Visible = true
+				end
+			end
+		end
+
 	end
 end)
