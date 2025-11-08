@@ -36,30 +36,8 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local player = Players.LocalPlayer
 
-local function Whitelist()
-
-	local wl = {}
-
-	for _, p in pairs(Players:GetPlayers()) do
-		if p.Name ~= player.Name then
-
-			local qchar = p.Character
-
-			if qchar then
-				for _, child in pairs(qchar:GetChildren()) do
-					if child:IsA("BasePart") then
-						wl[child] = true
-					end
-				end
-			end
-		end
-	end
-	return wl
-end
-
 RunService.Stepped:Connect(function()
 	if not Settings.AmpToggle then return end
-	
 	for _, p in pairs(Players:GetPlayers()) do
 		if p.Name ~= player.Name then
 
@@ -75,18 +53,16 @@ RunService.Stepped:Connect(function()
 					local tool = Char and Char:FindFirstChildOfClass("Tool")
 					local Handle = tool and tool:FindFirstChild("Handle")
 
-					local wll = Whitelist()
+					if not tool and Handle then return end
 
-					if tool and Handle then
-						for _, hit in pairs(Handle:GetTouchingParts()) do
-							if wll[hit] then
-								for _, Child in pairs(qChar:GetChildren()) do
-									for _ = 1, Settings.Damage do
-										if Child:IsA("BasePart") then
-											firetouchinterest(Child, Handle, 0)
-											firetouchinterest(Child, Handle, 1)
-											firetouchinterest(Child, Handle, 0)
-										end
+					for _, hit in pairs(Handle:GetTouchingParts()) do
+						if hit:IsA("BasePart") then
+							for _, Child in pairs(hit.Parent:GetChildren()) do
+								for _ = 1, Settings.Damage do
+									if Child:IsA("BasePart") then
+										firetouchinterest(Child, Handle, 0)
+										firetouchinterest(Child, Handle, 1)
+										firetouchinterest(Child, Handle, 0)
 									end
 								end
 							end
