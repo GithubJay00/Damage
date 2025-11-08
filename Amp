@@ -76,9 +76,8 @@ RunService.Stepped:Connect(function()
 					local Handle = tool and tool:FindFirstChild("Handle")
 
 					local wll = Whitelist()
-					if not tool and Handle then return end
 
-					pcall(function()
+					if tool and Handle then
 						for _, hit in pairs(Handle:GetTouchingParts()) do
 							if wll[hit] then
 								for _, Child in pairs(qChar:GetChildren()) do
@@ -92,7 +91,7 @@ RunService.Stepped:Connect(function()
 								end
 							end
 						end
-					end)
+					end
 				end
 			end
 		end
