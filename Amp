@@ -26,8 +26,8 @@ getgenv().Settings = {
 	
 	guiToggle = true , 
 	
-	HitboxToggle = true , 
-	HitboxSize = 3.5 , 
+	HitboxToggle = false , 
+	HitboxSize = 3 , 
 	HitboxVisual = false ,
 	HitboxColor = Color3.fromRGB(0, 0, 0)
 }
