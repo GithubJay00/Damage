@@ -56,7 +56,7 @@ RunService.Stepped:Connect(function()
 
 					if not tool and Handle then return end
 
-					pcall(function()
+					--pcall(function()
 						for _, hit in pairs(Handle:GetTouchingParts()) do
 							if hit:IsA("BasePart") then
 								for _ = 1, Settings.Damage do
@@ -66,7 +66,7 @@ RunService.Stepped:Connect(function()
 								end
 							end
 						end
-					end)
+					--end)
 				end
 			end
 		end
