@@ -19,7 +19,7 @@ end
 getgenv().Settings = {
 
 	AmpToggle = true , 
-	Damage = 2 ,
+	Damage = 4 ,
 	
 	LungeBotToggled = true ,
 	LungeBotRange = 9  ,
@@ -38,6 +38,7 @@ local player = Players.LocalPlayer
 
 RunService.Stepped:Connect(function()
 	if not Settings.AmpToggle then return end
+	
 	for _, p in pairs(Players:GetPlayers()) do
 		if p.Name ~= player.Name then
 
@@ -49,25 +50,27 @@ RunService.Stepped:Connect(function()
 
 			if HM and qHM then
 				if HM.Health > 0 and qHM.Health > 0 then
-
+					
 					local tool = Char and Char:FindFirstChildOfClass("Tool")
 					local Handle = tool and tool:FindFirstChild("Handle")
 
 					if not tool and Handle then return end
 
-					for _, hit in pairs(Handle:GetTouchingParts()) do
-						if hit:IsA("BasePart") then
-							for _, Child in pairs(hit.Parent:GetChildren()) do
-								for _ = 1, Settings.Damage do
-									if Child:IsA("BasePart") then
-										firetouchinterest(Child, Handle, 0)
-										firetouchinterest(Child, Handle, 1)
-										firetouchinterest(Child, Handle, 0)
+					pcall(function()
+						for _, hit in pairs(Handle:GetTouchingParts()) do
+							if hit:IsA("BasePart") then
+								for _, Child in pairs(hit.Parent:GetChildren()) do
+									for _ = 1, Settings.Damage do
+										if Child:IsA("BasePart") then
+											firetouchinterest(Child, Handle, 0)
+											firetouchinterest(Child, Handle, 1)
+											firetouchinterest(Child, Handle, 0)
+										end
 									end
 								end
 							end
 						end
-					end
+					end)
 				end
 			end
 		end
