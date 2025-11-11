@@ -2,7 +2,6 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 --local ids = {6361937392, 6356763358, 11515893037, 13594360346}
 
 if game.PlaceId == 6361937392 or game.PlaceId == 6356763358 or game.PlaceId == 11515893037 or game.PlaceId == 13594360346 then
-	print("tb")
 	local ReplicatedFirst = game:GetService("ReplicatedFirst")
 	local sm = ReplicatedFirst:FindFirstChild("Static"):FindFirstChild("Superman")
 	local Stats1 = ReplicatedFirst:FindFirstChild("Prod"):FindFirstChild("Stats")
@@ -26,7 +25,7 @@ getgenv().Settings = {
 	
 	hitbox = {
 		Toggle = false , 
-		Size = 3 , 
+		Size = 2 , 
 		Visual = false ,
 		Color = Color3.fromRGB(0, 0, 0)	
 	},
