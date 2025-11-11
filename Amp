@@ -1,9 +1,9 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
-local ReplicatedFirst = game:GetService("ReplicatedFirst")
-local ids = {6361937392, 6356763358, 11515893037, 13594360346}
+--local ids = {6361937392, 6356763358, 11515893037, 13594360346}
 
-if game.PlaceId == ids then
-	print("t1b")
+if game.PlaceId == 6361937392 or game.PlaceId == 6356763358 or game.PlaceId == 11515893037 or game.PlaceId == 13594360346 then
+	print("tb")
+	local ReplicatedFirst = game:GetService("ReplicatedFirst")
 	local sm = ReplicatedFirst:FindFirstChild("Static"):FindFirstChild("Superman")
 	local Stats1 = ReplicatedFirst:FindFirstChild("Prod"):FindFirstChild("Stats")
 	local SH = ReplicatedFirst:FindFirstChild("Static"):FindFirstChild("UIScaleHandler")
@@ -26,7 +26,7 @@ getgenv().Settings = {
 	
 	hitbox = {
 		Toggle = false , 
-		Size = 2.5 , 
+		Size = 3 , 
 		Visual = false ,
 		Color = Color3.fromRGB(0, 0, 0)	
 	},
@@ -179,7 +179,7 @@ RunService.Stepped:Connect(function()
 end)
 
 RunService.RenderStepped:Connect(function()
-	if game.PlaceId == ids then
+	if game.PlaceId == 6361937392 or game.PlaceId == 6356763358 or game.PlaceId == 11515893037 or game.PlaceId == 13594360346 then
 		_G.playerGui = player:FindFirstChild("PlayerGui")
 		_G.UIF = _G.playerGui:FindFirstChild("UserInterface")
 		_G.Menus = _G.UIF:FindFirstChild("Menus")
