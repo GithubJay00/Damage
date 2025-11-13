@@ -1,5 +1,4 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
---local ids = {6361937392, 6356763358, 11515893037, 13594360346}
 
 if game.PlaceId == 6361937392 or game.PlaceId == 6356763358 or game.PlaceId == 11515893037 or game.PlaceId == 13594360346 then
 	local ReplicatedFirst = game:GetService("ReplicatedFirst")
@@ -9,9 +8,6 @@ if game.PlaceId == 6361937392 or game.PlaceId == 6356763358 or game.PlaceId == 1
 	if sm and Stats1 and SH then sm.Parent = nil Stats1.Parent = nil SH.Parent = nil end
 end
 
-if game.PlaceId == {6361937392, 6356763358, 11515893037, 13594360346} then
-	print("(o_o)")
-end
 
 getgenv().Settings = {
 	
@@ -36,11 +32,9 @@ getgenv().Settings = {
 }
 
 
-
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local player = Players.LocalPlayer
-
 
 RunService.Stepped:Connect(function()
 	if not Settings.AmpToggle then return end
@@ -64,7 +58,6 @@ RunService.Stepped:Connect(function()
 					pcall(function()
 						for _, hit in pairs(Handle:GetTouchingParts()) do
 							if hit:IsA("BasePart") then
-
 								local Target = hit.Parent
 								if Target == Char then return end
 
@@ -90,7 +83,6 @@ RunService.Stepped:Connect(function()
 				pcall(function()
 					local qChar = p.Character
 					local qHRP = qChar and qChar:FindFirstChild("HumanoidRootPart")
-
 					qHRP.Size = Vector3.new(Settings.hitbox.Size, Settings.hitbox.Size, Settings.hitbox.Size)
 					qHRP.CanCollide = false
 				end)
@@ -102,7 +94,6 @@ RunService.Stepped:Connect(function()
 				pcall(function()
 					local qChar = p.Character
 					local qHRP = qChar and qChar:FindFirstChild("HumanoidRootPart")
-
 					qHRP.Size = Vector3.new(2, 2, 1)
 					qHRP.CanCollide = false
 				end)
@@ -110,7 +101,6 @@ RunService.Stepped:Connect(function()
 		end
 	end
 end)
-
 RunService.Stepped:Connect(function()
 	if Settings.hitbox.Toggle then
 		for _, p in pairs(Players:GetPlayers()) do
@@ -118,7 +108,6 @@ RunService.Stepped:Connect(function()
 				pcall(function()
 					local qChar = p.Character
 					local qHRP = qChar and qChar:FindFirstChild("HumanoidRootPart")
-
 					qHRP.Transparency = 0.7
 				end)
 			end
@@ -129,7 +118,6 @@ RunService.Stepped:Connect(function()
 				pcall(function()
 					local qChar = p.Character
 					local qHRP = qChar and qChar:FindFirstChild("HumanoidRootPart")
-
 					qHRP.Transparency = 1
 				end)
 			end
@@ -149,7 +137,6 @@ RunService.RenderStepped:Connect(function()
 		end
 	end
 end)
-
 
 RunService.Stepped:Connect(function()
 	if not Settings.lunge.Toggle then return end
