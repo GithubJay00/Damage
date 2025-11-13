@@ -23,7 +23,7 @@ getgenv().Settings = {
 	
 	hitbox = {
 		Toggle = false , 
-		Size = 2 , 
+		Size = 3.5, 
 		Visual = false ,
 		Color = Color3.fromRGB(0, 0, 0)	
 	},
