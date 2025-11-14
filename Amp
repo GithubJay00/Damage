@@ -10,25 +10,26 @@ end
 
 
 getgenv().Settings = {
-	
+
 	amp = {
-		Toggle = false , 
-		Range = 4 
+		Toggle = true , 
 	},
-	
+
 	lunge = {
 		Toggle = true ,
 		Range = 9  	
 	},
-	
+
 	hitbox = {
 		Toggle = false , 
-		Size = 4.5, 
+		Size = 2 , 
 		Visual = false ,
 		Color = Color3.fromRGB(0, 0, 0)	
 	},
-	
-	guiToggle = true 
+
+	gui = {
+		Toggle = true
+	}
 }
 
 
@@ -37,7 +38,7 @@ local RunService = game:GetService("RunService")
 local player = Players.LocalPlayer
 
 RunService.Stepped:Connect(function()
-	if not Settings.AmpToggle then return end
+	if not Settings.amp.Toggle then return end
 
 	for _, p in pairs(Players:GetPlayers()) do
 		if p.Name ~= player.Name then
@@ -76,6 +77,11 @@ RunService.Stepped:Connect(function()
 	end
 end)
 
+
+
+
+-- hitbox size
+
 RunService.Stepped:Connect(function()
 	if Settings.hitbox.Toggle then
 		for _, p in pairs(Players:GetPlayers()) do
@@ -101,6 +107,10 @@ RunService.Stepped:Connect(function()
 		end
 	end
 end)
+
+
+-- hitbox visual
+
 RunService.Stepped:Connect(function()
 	if Settings.hitbox.Visual then
 		for _, p in pairs(Players:GetPlayers()) do
@@ -125,6 +135,9 @@ RunService.Stepped:Connect(function()
 	end
 end)
 
+
+-- hitbox color
+
 RunService.RenderStepped:Connect(function()
 	for _, p in pairs(Players:GetPlayers()) do
 		if p.Name ~= player.Name then
@@ -138,12 +151,16 @@ RunService.RenderStepped:Connect(function()
 	end
 end)
 
+
+
+
+
 RunService.Stepped:Connect(function()
 	if not Settings.lunge.Toggle then return end
-	
+
 	for _, p in pairs(Players:GetPlayers()) do
 		if p.Name ~= player.Name then
-			
+
 			local pChar = p.Character
 			local pHRP = pChar and pChar:FindFirstChild("HumanoidRootPart")
 			local pHM = pChar and pChar:FindFirstChildOfClass("Humanoid")
@@ -173,8 +190,8 @@ RunService.RenderStepped:Connect(function()
 		_G.playerGui = player:FindFirstChild("PlayerGui")
 		_G.UIF = _G.playerGui:FindFirstChild("UserInterface")
 		_G.Menus = _G.UIF:FindFirstChild("Menus")
-		if not Settings.guiToggle then return end
-		
+		if not Settings.gui.Toggle then return end
+
 		if _G.Menus:FindFirstChild("Store") then
 			if _G.Menus:FindFirstChild("Store").Position == UDim2.new(0.5, 0, 1.5, 0) then
 				_G.Menus:FindFirstChild("Store").Visible = false
@@ -238,7 +255,7 @@ RunService.RenderStepped:Connect(function()
 				_G.Menus:FindFirstChild("Clans").Visible = true
 			end
 		end
-		
+
 		if _G.Menus:FindFirstChild("UpdateLog") then
 			if _G.Menus:FindFirstChild("UpdateLog").Position == UDim2.new(0.5, 0, 1.5, 0) then
 				_G.Menus:FindFirstChild("UpdateLog").Visible = false
