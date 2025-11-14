@@ -21,9 +21,9 @@ getgenv().Settings = {
 	},
 
 	hitbox = {
-		Toggle = false , 
+		Toggle = true , 
 		Size = 2 , 
-		Visual = false ,
+		Visual = true ,
 		Color = Color3.fromRGB(0, 0, 0)	
 	},
 
