@@ -12,7 +12,7 @@ end
 getgenv().Settings = {
 
 	amp = {
-		Toggle = true , 
+		Toggle = false , 
 	},
 
 	lunge = {
@@ -22,8 +22,8 @@ getgenv().Settings = {
 
 	hitbox = {
 		Toggle = true , 
-		Size = 2 , 
-		Visual = true ,
+		Size = 4.8 , 
+		Visual = false ,
 		Color = Color3.fromRGB(0, 0, 0)	
 	},
 
