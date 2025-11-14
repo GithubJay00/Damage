@@ -102,7 +102,7 @@ RunService.Stepped:Connect(function()
 	end
 end)
 RunService.Stepped:Connect(function()
-	if Settings.hitbox.Toggle then
+	if Settings.hitbox.Visual then
 		for _, p in pairs(Players:GetPlayers()) do
 			if p.Name ~= player.Name then
 				pcall(function()
