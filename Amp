@@ -1,14 +1,5 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-if game.PlaceId == 6361937392 or game.PlaceId == 6356763358 or game.PlaceId == 11515893037 or game.PlaceId == 13594360346 then
-	local ReplicatedFirst = game:GetService("ReplicatedFirst")
-	local Superman = ReplicatedFirst:FindFirstChild("Static"):FindFirstChild("Superman")
-	local Stats = ReplicatedFirst:FindFirstChild("Prod"):FindFirstChild("Stats")
-	local UIScaleHandler = ReplicatedFirst:FindFirstChild("Static"):FindFirstChild("UIScaleHandler")
-	if Superman and Stats and UIScaleHandler then Superman.Parent = nil Stats.Parent = nil UIScaleHandler.Parent = nil end
-end
-
-
 getgenv().Settings = {
 	
 	amp = {
@@ -33,7 +24,6 @@ getgenv().Settings = {
 		Toggle = true
 	}
 }
-
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
