@@ -13,8 +13,7 @@ getgenv().Settings = {
 	
 	amp = {
 		Toggle = true,
-		Delay = 0.5,
-		ampX = 3,
+		ampX = 2,
 		HitAll = false
 	},
 
@@ -40,59 +39,57 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local player = Players.LocalPlayer
 
-while wait(Settings.amp.Delay) do
+RunService.Heartbeat:Connect(function()
 	if not Settings.amp.Toggle then return end
+	
+	local GetPlayers = Players:GetPlayers()
+	for _, others in pairs(GetPlayers) do
+		if others.Name ~= player.Name then
 
-	task.spawn(function()
-		local GetPlayers = Players:GetPlayers()
-		for _, others in pairs(GetPlayers) do
-			if others.Name ~= player.Name then
+			local othersChar = others.Character
+			local othersHumanoid = othersChar and othersChar:FindFirstChildOfClass("Humanoid")
 
-				local othersChar = others.Character
-				local othersHumanoid = othersChar and othersChar:FindFirstChildOfClass("Humanoid")
+			local Char = player.Character
+			local Humanoid = Char and Char:FindFirstChildOfClass("Humanoid")
 
-				local Char = player.Character
-				local Humanoid = Char and Char:FindFirstChildOfClass("Humanoid")
+			if Humanoid and othersHumanoid then
+				if Humanoid.Health > 0 and othersHumanoid.Health > 0 then
 
-				if Humanoid and othersHumanoid then
-					if Humanoid.Health > 0 and othersHumanoid.Health > 0 then
+					local tool = Char and Char:FindFirstChildOfClass("Tool")
+					local Handle = tool and tool:FindFirstChild("Handle")
+					if not tool and Handle then return end 
 
-						local tool = Char and Char:FindFirstChildOfClass("Tool")
-						local Handle = tool and tool:FindFirstChild("Handle")
-						if not tool and Handle then return end 
+					pcall(function()
+						local HandleTouchInstances = Handle:GetTouchingParts() 
+						for _, hit in pairs(HandleTouchInstances) do
+							if hit:IsA("BasePart") then
 
-						pcall(function()
-							local HandleTouchInstances = Handle:GetTouchingParts() 
-							for _, hit in pairs(HandleTouchInstances) do
-								if hit:IsA("BasePart") then
+								local TargetChar = hit.Parent
+								if TargetChar == Char then return end 
+								local TargetChildren = TargetChar:GetChildren()
 
-									local TargetChar = hit.Parent
-									if TargetChar == Char then return end 
-									local TargetChildren = TargetChar:GetChildren()
-
-									if Settings.amp.HitAll then 
-										for _, Child in pairs(TargetChildren) do
-											if Child:IsA("BasePart") then
-												for _ = 1, Settings.amp.ampX do
-													firetouchinterest(Child, Handle, 0)
-													firetouchinterest(Child, Handle, 1)
-												end
+								if Settings.amp.HitAll then 
+									for _, Child in pairs(TargetChildren) do
+										if Child:IsA("BasePart") then
+											for _ = 1, Settings.amp.ampX do
+												firetouchinterest(Child, Handle, 0)
+												firetouchinterest(Child, Handle, 1)
 											end
 										end
-									else
-										for _ = 1, Settings.amp.ampX do
-											firetouchinterest(hit, Handle, 0)
-											firetouchinterest(hit, Handle, 1)
-										end
+									end
+								else
+									for _ = 1, Settings.amp.ampX do
+										firetouchinterest(hit, Handle, 0)
+										firetouchinterest(hit, Handle, 1)
 									end
 								end
 							end
-						end)
-					end
+						end
+					end)
 				end
 			end
 		end
-	end)
+	end
 end
 
 RunService.Stepped:Connect(function()
