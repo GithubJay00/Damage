@@ -2,17 +2,20 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 
 if game.PlaceId == 6361937392 or game.PlaceId == 6356763358 or game.PlaceId == 11515893037 or game.PlaceId == 13594360346 then
 	local ReplicatedFirst = game:GetService("ReplicatedFirst")
-	local sm = ReplicatedFirst:FindFirstChild("Static"):FindFirstChild("Superman")
-	local Stats1 = ReplicatedFirst:FindFirstChild("Prod"):FindFirstChild("Stats")
-	local SH = ReplicatedFirst:FindFirstChild("Static"):FindFirstChild("UIScaleHandler")
-	if sm and Stats1 and SH then sm.Parent = nil Stats1.Parent = nil SH.Parent = nil end
+	local Superman = ReplicatedFirst:FindFirstChild("Static"):FindFirstChild("Superman")
+	local Stats = ReplicatedFirst:FindFirstChild("Prod"):FindFirstChild("Stats")
+	local UIScaleHandler = ReplicatedFirst:FindFirstChild("Static"):FindFirstChild("UIScaleHandler")
+	if Superman and Stats and UIScaleHandler then Superman.Parent = nil Stats.Parent = nil UIScaleHandler.Parent = nil end
 end
 
 
 getgenv().Settings = {
-
+	
 	amp = {
-		Toggle = true , 
+		Toggle = true,
+		Delay = 0.5,
+		ampX = 3,
+		HitAll = false
 	},
 
 	lunge = {
@@ -21,12 +24,12 @@ getgenv().Settings = {
 	},
 
 	hitbox = {
-		Toggle = true , 
-		Size = 4.5, 
+		Toggle = false , 
+		Size = 4 , 
 		Visual = false ,
 		Color = Color3.fromRGB(0, 0, 0)	
 	},
-
+	
 	gui = {
 		Toggle = true
 	}
@@ -37,50 +40,60 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local player = Players.LocalPlayer
 
-RunService.Stepped:Connect(function()
+while wait(Settings.amp.Delay) do
 	if not Settings.amp.Toggle then return end
 
-	for _, p in pairs(Players:GetPlayers()) do
-		if p.Name ~= player.Name then
+	task.spawn(function()
+		local GetPlayers = Players:GetPlayers()
+		for _, others in pairs(GetPlayers) do
+			if others.Name ~= player.Name then
 
-			local qChar = p.Character
-			local qHM = qChar and qChar:FindFirstChildOfClass("Humanoid")
+				local othersChar = others.Character
+				local othersHumanoid = othersChar and othersChar:FindFirstChildOfClass("Humanoid")
 
-			local Char = player.Character
-			local HM = Char and Char:FindFirstChildOfClass("Humanoid")
+				local Char = player.Character
+				local Humanoid = Char and Char:FindFirstChildOfClass("Humanoid")
 
-			if HM and qHM then
-				if HM.Health > 0 and qHM.Health > 0 then
+				if Humanoid and othersHumanoid then
+					if Humanoid.Health > 0 and othersHumanoid.Health > 0 then
 
-					local tool = Char and Char:FindFirstChildOfClass("Tool")
-					local Handle = tool and tool:FindFirstChild("Handle")
-					if not tool and Handle then return end
+						local tool = Char and Char:FindFirstChildOfClass("Tool")
+						local Handle = tool and tool:FindFirstChild("Handle")
+						if not tool and Handle then return end 
 
-					pcall(function()
-						for _, hit in pairs(Handle:GetTouchingParts()) do
-							if hit:IsA("BasePart") then
-								local Target = hit.Parent
-								if Target == Char then return end
+						pcall(function()
+							local HandleTouchInstances = Handle:GetTouchingParts() 
+							for _, hit in pairs(HandleTouchInstances) do
+								if hit:IsA("BasePart") then
 
-								for _, Child in pairs(Target:GetChildren()) do
-									if Child:IsA("BasePart") then
-										firetouchinterest(Child, Handle, 0)
-										firetouchinterest(Child, Handle, 1)
+									local TargetChar = hit.Parent
+									if TargetChar == Char then return end 
+									local TargetChildren = TargetChar:GetChildren()
+
+									if Settings.amp.HitAll then 
+										for _, Child in pairs(TargetChildren) do
+											if Child:IsA("BasePart") then
+												for _ = 1, Settings.amp.ampX do
+													firetouchinterest(Child, Handle, 0)
+													firetouchinterest(Child, Handle, 1)
+												end
+											end
+										end
+									else
+										for _ = 1, Settings.amp.ampX do
+											firetouchinterest(hit, Handle, 0)
+											firetouchinterest(hit, Handle, 1)
+										end
 									end
 								end
 							end
-						end
-					end)
+						end)
+					end
 				end
 			end
 		end
-	end
-end)
-
-
-
-
--- hitbox size
+	end)
+end
 
 RunService.Stepped:Connect(function()
 	if Settings.hitbox.Toggle then
@@ -106,12 +119,7 @@ RunService.Stepped:Connect(function()
 			end
 		end
 	end
-end)
 
-
--- hitbox visual
-
-RunService.Stepped:Connect(function()
 	if Settings.hitbox.Visual then
 		for _, p in pairs(Players:GetPlayers()) do
 			if p.Name ~= player.Name then
@@ -133,12 +141,7 @@ RunService.Stepped:Connect(function()
 			end
 		end
 	end
-end)
 
-
--- hitbox color
-
-RunService.RenderStepped:Connect(function()
 	for _, p in pairs(Players:GetPlayers()) do
 		if p.Name ~= player.Name then
 			pcall(function()
@@ -149,36 +152,28 @@ RunService.RenderStepped:Connect(function()
 			end)
 		end
 	end
-end)
+	
+	if Settings.lunge.Toggle then
+		for _, p in pairs(Players:GetPlayers()) do
+			if p.Name ~= player.Name then
 
+				local pChar = p.Character
+				local pHRP = pChar and pChar:FindFirstChild("HumanoidRootPart")
+				local pHM = pChar and pChar:FindFirstChildOfClass("Humanoid")
 
+				local Char = player.Character
+				local HRP = Char and Char:FindFirstChild("HumanoidRootPart")
+				local HM = Char and Char:FindFirstChildOfClass("Humanoid")
 
-
-
-RunService.Stepped:Connect(function()
-	if not Settings.lunge.Toggle then return end
-
-	for _, p in pairs(Players:GetPlayers()) do
-		if p.Name ~= player.Name then
-
-			local pChar = p.Character
-			local pHRP = pChar and pChar:FindFirstChild("HumanoidRootPart")
-			local pHM = pChar and pChar:FindFirstChildOfClass("Humanoid")
-
-			local Char = player.Character
-			local HRP = Char and Char:FindFirstChild("HumanoidRootPart")
-			local HM = Char and Char:FindFirstChildOfClass("Humanoid")
-
-			if HM and pHM then
-				if HM.Health > 0 and pHM.Health > 0 then
-					local tool = Char and Char:FindFirstChildOfClass("Tool")
-					local Handle = tool and tool:FindFirstChild("Handle")
-
-					pcall(function()
+				if HM and pHM then
+					if HM.Health > 0 and pHM.Health > 0 then
+						local tool = Char and Char:FindFirstChildOfClass("Tool")
+						local Handle = tool and tool:FindFirstChild("Handle")
 						if not tool and Handle then return end
+						
 						local Distance = (Handle.Position - pHRP.Position).Magnitude
 						if Distance <= Settings.lunge.Range then tool:Activate() end
-					end)
+					end
 				end
 			end
 		end
@@ -188,79 +183,26 @@ end)
 RunService.RenderStepped:Connect(function()
 	if game.PlaceId == 6361937392 or game.PlaceId == 6356763358 or game.PlaceId == 11515893037 or game.PlaceId == 13594360346 then
 		_G.playerGui = player:FindFirstChild("PlayerGui")
-		_G.UIF = _G.playerGui:FindFirstChild("UserInterface")
-		_G.Menus = _G.UIF:FindFirstChild("Menus")
+		_G.UIF = _G.playerGui and _G.playerGui:FindFirstChild("UserInterface")
+		_G.Menus = _G.UIF and _G.UIF:FindFirstChild("Menus")
 		if not Settings.gui.Toggle then return end
 
-		if _G.Menus:FindFirstChild("Store") then
-			if _G.Menus:FindFirstChild("Store").Position == UDim2.new(0.5, 0, 1.5, 0) then
-				_G.Menus:FindFirstChild("Store").Visible = false
-			else
-				_G.Menus:FindFirstChild("Store").Visible = true
-			end
-		end
-
-		if _G.Menus:FindFirstChild("Quests") then
-			if _G.Menus:FindFirstChild("Quests").Position == UDim2.new(0.5, 0, 1.5, 0) then
-				_G.Menus:FindFirstChild("Quests").Visible = false
-			else
-				_G.Menus:FindFirstChild("Quests").Visible = true
-			end
-		end
-
-		if _G.Menus:FindFirstChild("Inventory") then
-			if _G.Menus:FindFirstChild("Inventory").Position == UDim2.new(0.5, 0, 1.5, 0) then
-				_G.Menus:FindFirstChild("Inventory").Visible = false
-			else
-				_G.Menus:FindFirstChild("Inventory").Visible = true
-			end
-		end
-
-		if _G.Menus:FindFirstChild("Index") then
-			if _G.Menus:FindFirstChild("Index").Position == UDim2.new(0.5, 0, 1.5, 0) then
-				_G.Menus:FindFirstChild("Index").Visible = false
-			else
-				_G.Menus:FindFirstChild("Index").Visible = true
-			end
-		end
-
-		if _G.Menus:FindFirstChild("BulkRewards") then
-			if _G.Menus:FindFirstChild("BulkRewards").Position == UDim2.new(0.5, 0, 1.5, 0) then
-				_G.Menus:FindFirstChild("BulkRewards").Visible = false
-			else
-				_G.Menus:FindFirstChild("BulkRewards").Visible = true
-			end
-		end
-
-		if _G.Menus:FindFirstChild("Marketplace") then
-			if _G.Menus:FindFirstChild("Marketplace").Position == UDim2.new(0.5, 0, 1.5, 0) then
-				_G.Menus:FindFirstChild("Marketplace").Visible = false
-			else
-				_G.Menus:FindFirstChild("Marketplace").Visible = true
-			end
-		end
-
-		if _G.Menus:FindFirstChild("Arcade") then
-			if _G.Menus:FindFirstChild("Arcade").Position == UDim2.new(0.5, 0, 1.5, 0) then
-				_G.Menus:FindFirstChild("Arcade").Visible = false
-			else
-				_G.Menus:FindFirstChild("Arcade").Visible = true
-			end
-		end
-
-		if _G.Menus:FindFirstChild("Clans") then
-			if _G.Menus:FindFirstChild("Clans").Position == UDim2.new(0.5, 0, 1.5, 0) then
-				_G.Menus:FindFirstChild("Clans").Visible = false
-			else
-				_G.Menus:FindFirstChild("Clans").Visible = true
-			end
-		end
-
-		if _G.Menus:FindFirstChild("UpdateLog") then
-			if _G.Menus:FindFirstChild("UpdateLog").Position == UDim2.new(0.5, 0, 1.5, 0) then
-				_G.Menus:FindFirstChild("UpdateLog").Visible = false
-			else
-				_G.Menus:FindFirstChild("UpdateLog").Visible = true
+		local menuNames = {
+			"Store", "Quests", "Inventory", "Index", "BulkRewards",
+			"Marketplace", "Arcade", "Clans", "UpdateLog"
+		}
+		
+		if _G.Menus then
+			for _, menuName in menuNames do
+				local menu = _G.Menus:FindFirstChild(menuName)
+				
+				if menu then
+					if menu.Position == UDim2.new(0.5, 0, 1.5, 0) then
+						menu.Visible = false
+					else
+						menu.Visible = true
+					end
+				end
 			end
 		end
 	end
