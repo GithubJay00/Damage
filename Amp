@@ -90,7 +90,7 @@ RunService.Heartbeat:Connect(function()
 			end
 		end
 	end
-end
+end)
 
 RunService.Stepped:Connect(function()
 	if Settings.hitbox.Toggle then
