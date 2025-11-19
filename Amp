@@ -5,7 +5,7 @@ getgenv().Settings = {
 	amp = {
 		Toggle = true,
 		ampX = 2,
-		HitAll = false
+		HitAll = true
 	},
 
 	lunge = {
