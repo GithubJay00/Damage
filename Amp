@@ -5,11 +5,12 @@ local OldIndex = MT. __index
 local OldNamecall = MT.__namecall
 
 setreadonly(MT, false)
-MT.__index = newcclosure(function(H, HP, P, M, TH, TI)
+MT.__index = newcclosure(function(H, HP, P, M, TH, TI, HB, SZ)
 	if not checkcaller() and getnamecallmethod() then
-		--if tostring(H) == "Humanoid" and tostring(HP) == "Health" then return end
 		if tostring(P) == "Position" and tostring(M) == "Magnitude" then return end
-		if tostring(TH) == "Handle" and tostring(TI) == "firetouchinterest" then return end
+		if tostring(HB) == "HumanoidRootPart" and tostring(SZ) == "Size" then return end
+		if tostring(TH) == "Handle" then return end
+		if tostring(TI) == "firetouchinterest" then return end
 	end
 	return OldIndex(H, HP)
 end)
@@ -35,7 +36,7 @@ getgenv().Settings = {
 	},
 
 	hitbox = {
-		Toggle = false , 
+		Toggle = true , 
 		Size = 4 , 
 		Visual = false ,
 		Color = Color3.fromRGB(0, 0, 0)	
