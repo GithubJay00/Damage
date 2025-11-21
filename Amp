@@ -1,10 +1,31 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
+local MT = getrawmetatable(game)
+local OldIndex = MT. __index
+local OldNamecall = MT.__namecall
+
+setreadonly(MT, false)
+MT.__index = newcclosure(function(H, HP, P, M, TH, TI)
+	if not checkcaller() and getnamecallmethod() then
+		if tostring(H) == "Humanoid" and tostring(HP) == "Health" then return end
+		if tostring(P) == "Position" and tostring(M) == "Magnitude" then return end
+		if tostring(TH) == "Handle" and tostring(TI) == "firetouchinterest" then return end
+	end
+	return OldIndex(H, HP)
+end)
+
+for _, v in next, getconnections(game:GetService("LogService").MessageOut) do v:Disable() end
+for _, v in next, getconnections(game:GetService("ScriptContext").Error) do v:Disable() end
+game:GetService("ScriptContext"):SetTimeout(0.1)
+
+setreadonly(MT, true) 
+
+
 getgenv().Settings = {
 	
 	amp = {
-		Toggle = true, 
-		ampX = 2,
+		Toggle = true,
+		ampX = 3,
 		HitAll = true
 	},
 
@@ -14,7 +35,7 @@ getgenv().Settings = {
 	},
 
 	hitbox = {
-		Toggle = true , 
+		Toggle = false , 
 		Size = 4 , 
 		Visual = false ,
 		Color = Color3.fromRGB(0, 0, 0)	
