@@ -7,7 +7,7 @@ local OldNamecall = MT.__namecall
 setreadonly(MT, false)
 MT.__index = newcclosure(function(H, HP, P, M, TH, TI)
 	if not checkcaller() and getnamecallmethod() then
-		if tostring(H) == "Humanoid" and tostring(HP) == "Health" then return end
+		--if tostring(H) == "Humanoid" and tostring(HP) == "Health" then return end
 		if tostring(P) == "Position" and tostring(M) == "Magnitude" then return end
 		if tostring(TH) == "Handle" and tostring(TI) == "firetouchinterest" then return end
 	end
@@ -25,8 +25,8 @@ getgenv().Settings = {
 	
 	amp = {
 		Toggle = true,
-		ampX = 3,
-		HitAll = true
+		ampX = 5,
+		HitAll = false
 	},
 
 	lunge = {
