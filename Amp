@@ -27,7 +27,7 @@ getgenv().Settings = {
 	amp = {
 		Toggle = true,
 		ampX = 5,
-		HitAll = false
+		HitAll = true
 	},
 
 	lunge = {
@@ -37,7 +37,7 @@ getgenv().Settings = {
 
 	hitbox = {
 		Toggle = true , 
-		Size = 4 , 
+		Size = 3.5, 
 		Visual = false ,
 		Color = Color3.fromRGB(0, 0, 0)	
 	},
