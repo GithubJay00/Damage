@@ -189,7 +189,7 @@ RunService.Stepped:Connect(function()
 	end
 end)
 
-RunService.RenderStepped:Connect(function()
+--[[RunService.RenderStepped:Connect(function()
 	if game.PlaceId == 6361937392 or game.PlaceId == 6356763358 or game.PlaceId == 11515893037 or game.PlaceId == 13594360346 then
 		_G.playerGui = player:FindFirstChild("PlayerGui")
 		_G.UIF = _G.playerGui and _G.playerGui:FindFirstChild("UserInterface")
@@ -215,4 +215,4 @@ RunService.RenderStepped:Connect(function()
 			end
 		end
 	end
-end)
+end)]]--
