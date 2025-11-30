@@ -26,7 +26,7 @@ getgenv().Settings = {
 	
 	amp = {
 		Toggle = true,
-		ampX = 2,
+		ampX = 3,
 		HitAll = false
 	},
 
