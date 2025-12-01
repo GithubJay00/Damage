@@ -3,216 +3,80 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 local MT = getrawmetatable(game)
 local OldIndex = MT. __index
 local OldNamecall = MT.__namecall
-
 setreadonly(MT, false)
-MT.__index = newcclosure(function(P, M, TH, TI, HB, SZ)
+MT.__index = newcclosure(function(P, M, TH, TI)
 	if not checkcaller() and getnamecallmethod() then
 		if tostring(P) == "Position" and tostring(M) == "Magnitude" then return end
-		if tostring(HB) == "HumanoidRootPart" and tostring(SZ) == "Size" then return end
-		if tostring(TH) == "Handle" then return end
-		if tostring(TI) == "firetouchinterest" then return end
+		if tostring(TH) == "Handle" then return end if tostring(TI) == "firetouchinterest" then return end
 	end
-	return OldIndex(P, M, TH, TI, HB, SZ)
+	return OldIndex(P, M, TH, TI)
 end)
-
 for _, v in next, getconnections(game:GetService("LogService").MessageOut) do v:Disable() end
 for _, v in next, getconnections(game:GetService("ScriptContext").Error) do v:Disable() end
 game:GetService("ScriptContext"):SetTimeout(0.1)
-
 setreadonly(MT, true) 
 
 
+
 getgenv().Settings = {
-	
 	amp = {
-		Toggle = false,
-		ampX = 3,
-		HitAll = false
-	},
-
-	lunge = {
-		Toggle = false ,
-		Range = 9  	
-	},
-
-	hitbox = {
-		Toggle = true , 
-		Size = 4, 
-		Visual = false ,
-		Color = Color3.fromRGB(0, 0, 0)	
-	},
-	
-	gui = {
-		Toggle = true
+		Toggled = true,
+		multiplyer = 4, 
+		hitall = false
 	}
 }
 
-local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local player = Players.LocalPlayer
+local PlayerService = game:GetService("Players")
+local Fetch_Players = PlayerService:GetPlayers()
 
-RunService.Heartbeat:Connect(function()
+local Player = PlayerService.LocalPlayer
+local Character = Player.Character
+local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
+
+local tool = Character and Character:FindFirstChildOfClass("Tool")
+local Handle = tool and tool:FindFirstChild("Handle")
+local HandleTouchingParts = Handle:GetTouchingParts() 
+getgenv().touch = firetouchinterest()
+
+
+RunService.Stepped:Connect(function()
 	if not Settings.amp.Toggle then return end
 	
-	local GetPlayers = Players:GetPlayers()
-	for _, others in pairs(GetPlayers) do
-		if others.Name ~= player.Name then
-
+	for _, others in pairs(Fetch_Players) do
+		if others.Name ~= Player.Name then
+			
 			local othersChar = others.Character
 			local othersHumanoid = othersChar and othersChar:FindFirstChildOfClass("Humanoid")
+			
+			if not tool or not Handle then return end
+			if Humanoid and othersHumanoid then if Humanoid.Health <= 0 or othersHumanoid.Health <= 0 then return end end
+			
+			for _, hit in pairs(HandleTouchingParts) do
+				if hit:IsA("BasePart") then
 
-			local Char = player.Character
-			local Humanoid = Char and Char:FindFirstChildOfClass("Humanoid")
+					local TargetChar = hit.Parent
+					if TargetChar == Character then return end 
+					local TargetChildren = TargetChar:GetChildren()
+					tool:Activate()
 
-			if Humanoid and othersHumanoid then
-				if Humanoid.Health > 0 and othersHumanoid.Health > 0 then
-
-					local tool = Char and Char:FindFirstChildOfClass("Tool")
-					local Handle = tool and tool:FindFirstChild("Handle")
-					if not tool and Handle then return end 
-
-					pcall(function()
-						local HandleTouchInstances = Handle:GetTouchingParts() 
-						for _, hit in pairs(HandleTouchInstances) do
-							if hit:IsA("BasePart") then
-
-								local TargetChar = hit.Parent
-								if TargetChar == Char then return end 
-								local TargetChildren = TargetChar:GetChildren()
-
-								if Settings.amp.HitAll then 
-									for _, Child in pairs(TargetChildren) do
-										if Child:IsA("BasePart") then
-											for _ = 1, Settings.amp.ampX do
-												firetouchinterest(Child, Handle, 0)
-												firetouchinterest(Child, Handle, 1)
-											end
-										end
-									end
-								else
-									for _ = 1, Settings.amp.ampX do
-										firetouchinterest(hit, Handle, 0)
-										firetouchinterest(hit, Handle, 1)
-									end
+					if Settings.amp.hitall then 
+						for _, Child in pairs(TargetChildren) do
+							if Child:IsA("BasePart") then
+								for _ = 1, Settings.amp.multiplyer do
+									touch(Child, Handle, 0)
+									touch(Child, Handle, 1)
 								end
 							end
 						end
-					end)
-				end
-			end
-		end
-	end
-end)
-
-RunService.Stepped:Connect(function()
-	if Settings.hitbox.Toggle then
-		for _, p in pairs(Players:GetPlayers()) do
-			if p.Name ~= player.Name then
-				pcall(function()
-					local qChar = p.Character
-					local qHRP = qChar and qChar:FindFirstChild("HumanoidRootPart")
-					qHRP.Size = Vector3.new(Settings.hitbox.Size, Settings.hitbox.Size, Settings.hitbox.Size)
-					qHRP.CanCollide = false
-				end)
-			end
-		end
-	else
-		for _, p in pairs(Players:GetPlayers()) do
-			if p.Name ~= player.Name then
-				pcall(function()
-					local qChar = p.Character
-					local qHRP = qChar and qChar:FindFirstChild("HumanoidRootPart")
-					qHRP.Size = Vector3.new(2, 2, 1)
-					qHRP.CanCollide = false
-				end)
-			end
-		end
-	end
-
-	if Settings.hitbox.Visual then
-		for _, p in pairs(Players:GetPlayers()) do
-			if p.Name ~= player.Name then
-				pcall(function()
-					local qChar = p.Character
-					local qHRP = qChar and qChar:FindFirstChild("HumanoidRootPart")
-					qHRP.Transparency = 0.7
-				end)
-			end
-		end
-	else
-		for _, p in pairs(Players:GetPlayers()) do
-			if p.Name ~= player.Name then
-				pcall(function()
-					local qChar = p.Character
-					local qHRP = qChar and qChar:FindFirstChild("HumanoidRootPart")
-					qHRP.Transparency = 1
-				end)
-			end
-		end
-	end
-
-	for _, p in pairs(Players:GetPlayers()) do
-		if p.Name ~= player.Name then
-			pcall(function()
-				local qChar = p.Character
-				local qHRP = qChar and qChar:FindFirstChild("HumanoidRootPart")
-
-				qHRP.Color = Settings.hitbox.Color
-			end)
-		end
-	end
-	
-	if Settings.lunge.Toggle then
-		for _, p in pairs(Players:GetPlayers()) do
-			if p.Name ~= player.Name then
-
-				local pChar = p.Character
-				local pHRP = pChar and pChar:FindFirstChild("HumanoidRootPart")
-				local pHM = pChar and pChar:FindFirstChildOfClass("Humanoid")
-
-				local Char = player.Character
-				local HRP = Char and Char:FindFirstChild("HumanoidRootPart")
-				local HM = Char and Char:FindFirstChildOfClass("Humanoid")
-
-				if HM and pHM then
-					if HM.Health > 0 and pHM.Health > 0 then
-						local tool = Char and Char:FindFirstChildOfClass("Tool")
-						local Handle = tool and tool:FindFirstChild("Handle")
-						if not tool and Handle then return end
-						
-						local Distance = (Handle.Position - pHRP.Position).Magnitude
-						if Distance <= Settings.lunge.Range then tool:Activate() end
-					end
-				end
-			end
-		end
-	end
-end)
-
---[[RunService.RenderStepped:Connect(function()
-	if game.PlaceId == 6361937392 or game.PlaceId == 6356763358 or game.PlaceId == 11515893037 or game.PlaceId == 13594360346 then
-		_G.playerGui = player:FindFirstChild("PlayerGui")
-		_G.UIF = _G.playerGui and _G.playerGui:FindFirstChild("UserInterface")
-		_G.Menus = _G.UIF and _G.UIF:FindFirstChild("Menus")
-		if not Settings.gui.Toggle then return end
-
-		local menuNames = {
-			"Store", "Quests", "Inventory", "Index", "BulkRewards",
-			"Marketplace", "Arcade", "Clans", "UpdateLog"
-		}
-		
-		if _G.Menus then
-			for _, menuName in menuNames do
-				local menu = _G.Menus:FindFirstChild(menuName)
-				
-				if menu then
-					if menu.Position == UDim2.new(0.5, 0, 1.5, 0) then
-						menu.Visible = false
 					else
-						menu.Visible = true
+						for _ = 1, Settings.amp.multiplyer do
+							touch(hit, Handle, 0)
+							touch(hit, Handle, 1)
+						end
 					end
 				end
 			end
 		end
 	end
-end)]]--
+end)
