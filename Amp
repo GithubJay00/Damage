@@ -1,5 +1,5 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
-print("loaded")
+
 local MT = getrawmetatable(game)
 local OldIndex = MT. __index
 local OldNamecall = MT.__namecall
@@ -17,6 +17,9 @@ game:GetService("ScriptContext"):SetTimeout(0.1)
 setreadonly(MT, true) 
 
 
+getgenv().functions = {
+	touch = firetouchinterest()
+}
 
 getgenv().Settings = {
 	amp = {
@@ -28,30 +31,29 @@ getgenv().Settings = {
 
 local RunService = game:GetService("RunService")
 local PlayerService = game:GetService("Players")
-local Fetch_Players = PlayerService:GetPlayers()
 
 local Player = PlayerService.LocalPlayer
 local Character = Player.Character
 local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
 
-local tool = Character and Character:FindFirstChildOfClass("Tool")
-local Handle = tool and tool:FindFirstChild("Handle")
-local HandleTouchingParts = Handle:GetTouchingParts() 
-getgenv().touch = firetouchinterest()
-
 
 RunService.Stepped:Connect(function()
-	if not Settings.amp.Toggle then return end
+	if not Settings.amp.Toggled then return end
 	
+	local Fetch_Players = PlayerService:GetPlayers()
 	for _, others in pairs(Fetch_Players) do
 		if others.Name ~= Player.Name then
 			
 			local othersChar = others.Character
 			local othersHumanoid = othersChar and othersChar:FindFirstChildOfClass("Humanoid")
 			
+			local tool = Character and Character:FindFirstChildOfClass("Tool")
+			local Handle = tool and tool:FindFirstChild("Handle")
+			
 			if not tool or not Handle then return end
 			if Humanoid and othersHumanoid then if Humanoid.Health <= 0 or othersHumanoid.Health <= 0 then return end end
 			
+			local HandleTouchingParts = Handle:GetTouchingParts() 
 			for _, hit in pairs(HandleTouchingParts) do
 				if hit:IsA("BasePart") then
 
@@ -64,15 +66,15 @@ RunService.Stepped:Connect(function()
 						for _, Child in pairs(TargetChildren) do
 							if Child:IsA("BasePart") then
 								for _ = 1, Settings.amp.multiplyer do
-									touch(Child, Handle, 0)
-									touch(Child, Handle, 1)
+									functions.touch(Child, Handle, 0)
+									functions.touch(Child, Handle, 1)
 								end
 							end
 						end
 					else
 						for _ = 1, Settings.amp.multiplyer do
-							touch(hit, Handle, 0)
-							touch(hit, Handle, 1)
+							functions.touch(hit, Handle, 0)
+							functions.touch(hit, Handle, 1)
 						end
 					end
 				end
