@@ -31,14 +31,14 @@ getgenv().Settings = {
 	},
 
 	lunge = {
-		Toggle = true ,
+		Toggle = false ,
 		Range = 9  	
 	},
 
 	hitbox = {
 		Toggle = true , 
 		Size = 4 , 
-		Visual = true ,
+		Visual = false ,
 		Color = Color3.fromRGB(0, 0, 0)	
 	}
 }
