@@ -27,11 +27,7 @@ getgenv().Settings = {
 
 local RunService = game:GetService("RunService")
 local PlayerService = game:GetService("Players")
-
 local Player = PlayerService.LocalPlayer
-local Character = Player.Character
-local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
-
 
 RunService.Stepped:Connect(function()
 	if not Settings.amp.Toggled then return end
@@ -43,11 +39,14 @@ RunService.Stepped:Connect(function()
 			local othersChar = others.Character
 			local othersHumanoid = othersChar and othersChar:FindFirstChildOfClass("Humanoid")
 			
+			local Character = Player.Character
+			local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
+			
 			local tool = Character and Character:FindFirstChildOfClass("Tool")
 			local Handle = tool and tool:FindFirstChild("Handle")
 			
-			if not tool or not Handle then return end
 			if Humanoid and othersHumanoid then if Humanoid.Health <= 0 or othersHumanoid.Health <= 0 then return end end
+			if not tool or not Handle then return end
 			
 			local HandleTouchingParts = Handle:GetTouchingParts() 
 			for _, hit in pairs(HandleTouchingParts) do
