@@ -55,7 +55,6 @@ RunService.Stepped:Connect(function()
 					local TargetChar = hit.Parent
 					if TargetChar == Character then return end 
 					local TargetChildren = TargetChar:GetChildren()
-					tool:Activate()
 
 					if Settings.amp.hitall then 
 						for _, Child in pairs(TargetChildren) do
