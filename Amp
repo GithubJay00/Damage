@@ -25,9 +25,9 @@ setreadonly(MT, true)
 getgenv().Settings = {
 	
 	amp = {
-		Toggle = false,
+		Toggle = true,
 		ampX = 5,
-		HitAll = false
+		HitAll = true
 	},
 
 	lunge = {
@@ -37,8 +37,8 @@ getgenv().Settings = {
 
 	hitbox = {
 		Toggle = true , 
-		Size = 5, 
-		Visual = false ,
+		Size = 1.5, 
+		Visual = true ,
 		Color = Color3.fromRGB(0, 0, 0)	
 	}
 }
